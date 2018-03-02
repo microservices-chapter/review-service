@@ -31,12 +31,12 @@ public class ReviewApplication {
     reviewMap.put("2", twoRecommendations);
   }
 
-  @GetMapping(value = "/recommendation/{productId}")
+  @GetMapping(value = "/review/{productId}")
   public  @ResponseBody List<Review> list(@PathVariable String productId) {
     return reviewMap.get(productId);
   }
 
-  @PostMapping(value = "/recommendation/{productId}")
+  @PostMapping(value = "/review/{productId}")
   public  @ResponseBody boolean add(@PathVariable String productId, @RequestBody Review review) {
     List<Review> reviews = reviewMap.get(productId);
     reviews.add(review);
