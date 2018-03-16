@@ -1,13 +1,21 @@
 package com.appian.microservices.review;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Review application.
@@ -18,10 +26,12 @@ import java.util.Map;
 @RestController
 public class ReviewApplication {
 
-  Map<String, List<Review>> reviewMap;
+  private static Logger LOG = LoggerFactory.getLogger(ReviewApplication.class);
+
+  Map<String,List<Review>> reviewMap;
 
   public ReviewApplication() {
-    reviewMap = new HashMap<String, List<Review>>();
+    reviewMap = new HashMap<String,List<Review>>();
     List<Review> oneRecommendations = new ArrayList<Review>();
     oneRecommendations.add(new Review("1", "Best Product 1", "This is why its the best! 1"));
     List<Review> twoRecommendations = new ArrayList<Review>();
@@ -32,12 +42,22 @@ public class ReviewApplication {
   }
 
   @GetMapping(value = "/review/{productId}")
-  public  @ResponseBody List<Review> list(@PathVariable String productId) {
+  public @ResponseBody
+  List<Review> list(
+      @PathVariable
+          String productId) {
+    LOG.info("Hit the list endpoint!");
     return reviewMap.get(productId);
   }
 
   @PostMapping(value = "/review/{productId}")
-  public  @ResponseBody boolean add(@PathVariable String productId, @RequestBody Review review) {
+  public @ResponseBody
+  boolean add(
+      @PathVariable
+          String productId,
+      @RequestBody
+          Review review) {
+    LOG.info("Hit the add endpoint!");
     List<Review> reviews = reviewMap.get(productId);
     reviews.add(review);
     reviewMap.put(productId, reviews);
