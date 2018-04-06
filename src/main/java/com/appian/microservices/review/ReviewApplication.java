@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class ReviewApplication {
 
-  private static Logger LOG = LoggerFactory.getLogger(ReviewApplication.class);
+  private static Logger LOG = LoggerFactory.getLogger("com.appian.microservices.review");
 
   Map<String,List<Review>> reviewMap;
 
