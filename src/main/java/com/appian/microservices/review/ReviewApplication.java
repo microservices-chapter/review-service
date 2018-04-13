@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * Review application.
@@ -24,21 +27,18 @@ import org.slf4j.LoggerFactory;
  */
 @SpringBootApplication
 @RestController
-public class ReviewApplication {
+public class ReviewApplication extends WebMvcConfigurerAdapter {
+
+  @Autowired
+  private CorrelationIdFilter correlationIdFilter;
+
+  @Autowired
+  private ReviewService reviewService;
 
   private static Logger LOG = LoggerFactory.getLogger("com.appian.microservices.review");
 
-  Map<String,List<Review>> reviewMap;
-
   public ReviewApplication() {
-    reviewMap = new HashMap<String,List<Review>>();
-    List<Review> oneRecommendations = new ArrayList<Review>();
-    oneRecommendations.add(new Review("1", "Best Product 1", "This is why its the best! 1"));
-    List<Review> twoRecommendations = new ArrayList<Review>();
-    twoRecommendations.add(new Review("2", "Best Product 2", "This is why its the best! 2"));
 
-    reviewMap.put("1", oneRecommendations);
-    reviewMap.put("2", twoRecommendations);
   }
 
   @GetMapping(value = "/review/{productId}")
@@ -47,7 +47,7 @@ public class ReviewApplication {
       @PathVariable
           String productId) {
     LOG.info("Hit the list endpoint!");
-    return reviewMap.get(productId);
+    return reviewService.getReviews(productId);
   }
 
   @PostMapping(value = "/review/{productId}")
@@ -58,10 +58,12 @@ public class ReviewApplication {
       @RequestBody
           Review review) {
     LOG.info("Hit the add endpoint!");
-    List<Review> reviews = reviewMap.get(productId);
-    reviews.add(review);
-    reviewMap.put(productId, reviews);
-    return true;
+    return reviewService.addReview(productId, review);
+  }
+
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(correlationIdFilter);
   }
 
   public static void main(String[] args) {

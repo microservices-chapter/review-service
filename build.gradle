@@ -1,4 +1,4 @@
-group 'inventory-service'
+group 'review-service'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -27,6 +27,9 @@ repositories {
 }
 
 dependencies {
+
+  compile 'com.google.guava:guava:24.1-jre'
+
   compile ('org.springframework.boot:spring-boot-starter-web') {
     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
   }

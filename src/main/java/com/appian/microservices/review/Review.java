@@ -5,17 +5,20 @@ public class Review {
 
   private String reviewHeader;
   private String reviewBody;
+  private int rating;
 
   public Review() {
     this.customerId = "";
     this.reviewHeader = "";
     this.reviewBody = "";
+    this.rating = 0;
   }
 
-  public Review(String customerId, String reviewHeader, String reviewBody) {
+  public Review(String customerId, String reviewHeader, String reviewBody, int rating) {
     this.customerId = customerId;
     this.reviewHeader = reviewHeader;
     this.reviewBody = reviewBody;
+    this.rating = rating;
   }
 
   public String getCustomerId() {
@@ -30,6 +33,10 @@ public class Review {
     return reviewBody;
   }
 
+  public int getRating() {
+    return rating;
+  }
+
   public void setCustomerId(String customerId) {
     this.customerId = customerId;
   }
@@ -40,5 +47,9 @@ public class Review {
 
   public void setReviewBody(String reviewBody) {
     this.reviewBody = reviewBody;
+  }
+
+  public void setRating(int rating) {
+    this.rating = rating;
   }
 }
