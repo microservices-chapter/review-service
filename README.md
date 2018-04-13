@@ -21,5 +21,5 @@ curl -H "CORRELATION-ID:<some correlation ID>" localhost:8080/review/1
 
 Post a new review about product #1:
 ```
-curl -H "Content-Type: application/json" -H "CORRELATION-ID:<some correlation ID>" -X POST -d "{\"customerId\":\"4\", \"reviewHeader\":\"Some header about the product\", \"reviewBody\":\"Some body text about the product\", \"rating\":5}" localhost:8080/review/1
+curl -H "Content-Type: application/json" -H "CORRELATION-ID:<some correlation ID>" -X POST -d "{\"customerId\":\"4\", \"sku\":\"12345\", \"reviewHeader\":\"Some header about the product\", \"reviewBody\":\"Some body text about the product\", \"rating\":5}" localhost:8080/review/add
 ```
