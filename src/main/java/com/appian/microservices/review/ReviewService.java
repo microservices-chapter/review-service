@@ -1,9 +1,6 @@
 package com.appian.microservices.review;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +29,22 @@ public class ReviewService {
     return repo.findBySku(sku);
   }
 
+  public List<Review> listBySkuAndRating(String sku, int rating) {
+    return repo.findBySkuAndRating(sku, rating);
+  }
+
   public List<Review> listByCustomerId(String customerId) {
     return repo.findByCustomerId(customerId);
   }
 
   public Review add(Review review) {
+    Review prevReview = repo.findBySkuAndCustomerId(review.getSku(), review.getCustomerId());
+    if (prevReview == null) {
+      return repo.save(review);
+    }
+    prevReview.setHeader(review.getHeader());
+    prevReview.setBody(review.getBody());
+    prevReview.setRating(review.getRating());
     return repo.save(review);
   }
 

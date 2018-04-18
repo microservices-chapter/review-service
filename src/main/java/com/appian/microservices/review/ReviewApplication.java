@@ -40,7 +40,7 @@ public class ReviewApplication extends WebMvcConfigurerAdapter {
   @GetMapping(value = "/review/list")
   public @ResponseBody
   List<Review> listAll() {
-    LOG.info("Hit the listBySku endpoint!");
+    LOG.info("Hit the listAll endpoint!");
     return reviewService.listAll();
   }
 
@@ -51,6 +51,17 @@ public class ReviewApplication extends WebMvcConfigurerAdapter {
           String sku) {
     LOG.info("Hit the listBySku endpoint!");
     return reviewService.listBySku(sku);
+  }
+
+  @GetMapping(value = "/review/list/product/{sku}/rating/{rating}")
+  public @ResponseBody
+  List<Review> listBySkuAndRating(
+      @PathVariable
+          String sku,
+      @PathVariable
+          int rating) {
+    LOG.info("Hit the listBySkuAndRating endpoint!");
+    return reviewService.listBySkuAndRating(sku, rating);
   }
 
   @GetMapping(value = "/review/list/customer/{customerId}")
