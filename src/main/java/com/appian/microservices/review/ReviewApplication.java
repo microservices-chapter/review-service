@@ -1,10 +1,9 @@
 package com.appian.microservices.review;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,9 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -41,24 +37,49 @@ public class ReviewApplication extends WebMvcConfigurerAdapter {
 
   }
 
-  @GetMapping(value = "/review/{productId}")
+  @GetMapping(value = "/review/list")
   public @ResponseBody
-  List<Review> list(
-      @PathVariable
-          String productId) {
-    LOG.info("Hit the list endpoint!");
-    return reviewService.getReviews(productId);
+  List<Review> listAll() {
+    LOG.info("Hit the listAll endpoint!");
+    return reviewService.listAll();
   }
 
-  @PostMapping(value = "/review/{productId}")
+  @GetMapping(value = "/review/list/product/{sku}")
   public @ResponseBody
-  boolean add(
+  List<Review> listBySku(
       @PathVariable
-          String productId,
+          String sku) {
+    LOG.info("Hit the listBySku endpoint!");
+    return reviewService.listBySku(sku);
+  }
+
+  @GetMapping(value = "/review/list/product/{sku}/rating/{rating}")
+  public @ResponseBody
+  List<Review> listBySkuAndRating(
+      @PathVariable
+          String sku,
+      @PathVariable
+          int rating) {
+    LOG.info("Hit the listBySkuAndRating endpoint!");
+    return reviewService.listBySkuAndRating(sku, rating);
+  }
+
+  @GetMapping(value = "/review/list/customer/{customerId}")
+  public @ResponseBody
+  List<Review> listByCustomerId(
+      @PathVariable
+          String customerId) {
+    LOG.info("Hit the listByCustomerId endpoint!");
+    return reviewService.listByCustomerId(customerId);
+  }
+
+  @PostMapping(value = "/review/add")
+  public @ResponseBody
+  Review add(
       @RequestBody
           Review review) {
     LOG.info("Hit the add endpoint!");
-    return reviewService.addReview(productId, review);
+    return reviewService.add(review);
   }
 
   @Override

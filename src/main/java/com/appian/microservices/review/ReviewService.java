@@ -1,39 +1,51 @@
 package com.appian.microservices.review;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.common.collect.Lists;
 
 @Service
 public class ReviewService {
 
-  Map<String,List<Review>> reviewMap;
+  // docker run --name mongodb -p 27017:27017 mongo
+  // docker start mongodb
+  // show dbs
+  // show collections
+  // db.test_table.find( {} )
+  // db.test_table.find( { _id: "2" } )
+
+  @Autowired
+  private ReviewRepository repo;
 
   public ReviewService() {
-    reviewMap = new HashMap<String,List<Review>>();
-    List<Review> oneRecommendations = new ArrayList<Review>();
-    oneRecommendations.add(new Review("1", "Best Product 1", "This is why its the best! 1", 5));
-    List<Review> twoRecommendations = new ArrayList<Review>();
-    twoRecommendations.add(new Review("2", "Best Product 2", "This is why its the best! 2", 4));
-
-    reviewMap.put("1", oneRecommendations);
-    reviewMap.put("2", twoRecommendations);
   }
 
-  public List<Review> getReviews(String productId) {
-    return reviewMap.get(productId);
+  public List<Review> listAll() {
+    return repo.findAll();
   }
 
-  public boolean addReview(String productId, Review review) {
-    List<Review> reviews = reviewMap.get(productId) == null ? Lists.newArrayList() : reviewMap.get(productId);
-    reviews.add(review);
-    reviewMap.put(productId, reviews);
-    return true;
+  public List<Review> listBySku(String sku) {
+    return repo.findBySku(sku);
+  }
+
+  public List<Review> listBySkuAndRating(String sku, int rating) {
+    return repo.findBySkuAndRating(sku, rating);
+  }
+
+  public List<Review> listByCustomerId(String customerId) {
+    return repo.findByCustomerId(customerId);
+  }
+
+  public Review add(Review review) {
+    Review prevReview = repo.findBySkuAndCustomerId(review.getSku(), review.getCustomerId());
+    if (prevReview == null) {
+      return repo.save(review);
+    }
+    prevReview.setHeader(review.getHeader());
+    prevReview.setBody(review.getBody());
+    prevReview.setRating(review.getRating());
+    return repo.save(review);
   }
 
 }

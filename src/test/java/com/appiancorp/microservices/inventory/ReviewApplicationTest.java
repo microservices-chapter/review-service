@@ -12,7 +12,7 @@ public class ReviewApplicationTest {
     @Test
     public void testList() {
         ReviewApplication inventoryApplication = new ReviewApplication();
-        List<Review> list = inventoryApplication.list("1");
+        List<Review> list = inventoryApplication.listBySku("1");
         Assert.assertThat(list.size(), CoreMatchers.equalTo(1));
     }
 }
