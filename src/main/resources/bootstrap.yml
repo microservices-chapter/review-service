@@ -3,7 +3,11 @@ spring:
     name: review-service
   cloud:
     config:
+      # In Dev, pass -Dspring.cloud.config.enabled=false as VM option (e.g in IDE) to disable config server
       uri: http://config-server:8888
       fail-fast: true
       password: foo
       username: user
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/review

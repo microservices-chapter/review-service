@@ -12,8 +12,8 @@ public class ReviewService {
   // docker start mongodb
   // show dbs
   // show collections
-  // db.test_table.find( {} )
-  // db.test_table.find( { _id: "2" } )
+  // db.review_table.find( {} )
+  // db.review_table.find( { _id: "2" } )
 
   @Autowired
   private ReviewRepository repo;
