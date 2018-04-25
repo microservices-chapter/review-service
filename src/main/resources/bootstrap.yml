@@ -10,4 +10,4 @@ spring:
       username: user
   data:
     mongodb:
-      uri: mongodb://localhost:27017/review
+      uri: mongodb://localhost:27077/review
