@@ -1,7 +1,7 @@
 FROM java:8-jre
-MAINTAINER Aboubacar Toure
+MAINTAINER Ben Edgar
 
-ADD ./build/libs/inventory-service-1.0-SNAPSHOT.jar /service/
-CMD ["java", "-Xmx200m", "-jar", "/service/inventory-service-1.0-SNAPSHOT.jar"]
+ADD ./build/libs/review-service-1.0-SNAPSHOT.jar /service/
+CMD ["java", "-Xmx200m", "-jar", "/service/review-service-1.0-SNAPSHOT.jar"]
 
-EXPOSE 8081
+EXPOSE 8082
